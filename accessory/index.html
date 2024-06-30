@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Car Accessories</title>
+    <link rel="stylesheet" href="/css/global.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Car Accessories</h1>
+
+    <form id="accessoryForm">
+        <label for="accessories">Choose an accessory:</label>
+        <select id="accessories">
+            <!-- Accessories and their prices -->
+            <option value="50">Accessory 1 - $50</option>
+            <option value="100">Accessory 2 - $100</option>
+            <option value="150">Accessory 3 - $150</option>
+        </select>
+        <br>
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" name="amount" min="1" max="10">
+        <br>
+        <input type="button" value="Add" id="addAccessory">
+    </form>
+    <br>
+    <table id="productList">
+        <tr>
+            <th>Item</th>
+            <th>Amount</th>
+            <th>Total Price</th>
+            <th>VAT (7%)</th>
+            <th>Total Price with VAT</th>
+        </tr>
+    </table>
+    <br>
+    <div id="finalTotalPriceContainer">
+        <strong>Total Price with VAT:</strong> $<span id="finalTotalPrice">0.00</span>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            let finalTotalPrice = 0;
+
+            $('#addAccessory').click(function() {
+                let accessory = $('#accessories option:selected').text();
+                let amount = $('#amount').val();
+                let price = $('#accessories').val();
+                let totalPriceWithoutVAT = price * amount;
+                let vatRate = 0.07;
+                let vatAmount = totalPriceWithoutVAT * vatRate;
+                let totalPriceWithVAT = totalPriceWithoutVAT + vatAmount;
+                
+                $('#productList').append(
+                    `<tr>
+                        <td>${accessory}</td>
+                        <td>${amount}</td>
+                        <td>$${totalPriceWithoutVAT.toFixed(2)}</td>
+                        <td>$${vatAmount.toFixed(2)}</td>
+                        <td>$${totalPriceWithVAT.toFixed(2)}</td>
+                    </tr>`
+                );
+
+                // Update final total price
+                finalTotalPrice += totalPriceWithVAT;
+                $('#finalTotalPrice').text(finalTotalPrice.toFixed(2));
+            });
+        });
+    </script>
+</body>
+</html>
